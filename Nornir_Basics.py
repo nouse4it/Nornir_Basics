@@ -1,27 +1,13 @@
 #==============================================================================
-
-# most needed modules
 # v2.5.0
+# Needed modules to import
 from nornir import InitNornir
 from nornir.plugins.functions.text import print_result, print_title
 from nornir.plugins.tasks.networking import netmiko_send_command, netmiko_send_config
 from nornir.plugins.tasks.networking import napalm_get
 import getpass
 
-# v3.0.0
-# Importing all needed Modules
-from nornir import InitNornir
-from nornir.core.task import Task, Result
-from nornir_utils.plugins.functions import print_result
-from nornir_napalm.plugins.tasks import napalm_get
-from nornir_netmiko import netmiko_send_command, netmiko_send_config
-from nornir.core.filter import F
-import getpass
-
-#==============================================================================
-
-# Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org norir)
-# Nornir v2.5.0
+# Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org nornir)
 nr = InitNornir(
     core={"num_workers":10},                            # Anzahl der Threads (gleichzeitige Ausführung)
     inventory={
@@ -34,7 +20,18 @@ nr = InitNornir(
     }
 )
 
-# Nornir v3.0
+#==============================================================================
+# v3.0.0
+# Needed modules to import
+from nornir import InitNornir
+from nornir.core.task import Task, Result
+from nornir_utils.plugins.functions import print_result
+from nornir_napalm.plugins.tasks import napalm_get
+from nornir_netmiko import netmiko_send_command, netmiko_send_config
+from nornir.core.filter import F
+import getpass
+
+# Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org norir)
 nr = InitNornir(
     runners={
         "plugin": "threaded",
@@ -52,17 +49,39 @@ nr = InitNornir(
 )
 #==============================================================================
 
+
+#################################################################################
+
+#GLOBAL (for v2.5.0 and V3.0.0)
+#==============================================================================
+# Access Inventory
 # Show Hosts of Inventory
 nr.inventory.hosts
 
 #==============================================================================
-
-# Filter Hosts of Inventory
+# Filtering of Inventory
+# Filter for name in Inventory:
 hosts = nr.filter(name="phusw-so-02") # filter for value = name in hosts.yaml. In this example for name of device
 # To use the filter you must run nornir at the end of the file with "hosts.run" instead of "nr.run" 
 
-#==============================================================================
+# Filter for <data> Values in Inventory
+hosts = nr.filter(dot1x="yes") # use only hosts where "data: dot1x: yes" is set in Host Inventory File!
 
+# Filter for groups...
+nx_hosts = nr.filter(site='Denklingen'))
+
+# ... or platform
+nx_hosts = nr.filter(platform='nxos_ssh')
+
+# Using the F function for advanced filtering
+# You need to import this library
+from nornir.core.filter import F
+# You can use F for filtering for multiple criterias, f.e. for platform and site
+nx_hosts = nr.filter(F(platform='nxos_ssh') & F(site='Denklingen'))
+# more infos about that see here: https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf Page 31 and following
+
+#==============================================================================
+# Running Tasks
 # Run Task with Nornir (example with one line Netmiko Send Command)
 r = nr.run(task=netmiko_send_command, command_string="<enter cli command here>", use_genie=True) # Genie can be used to parse the output of show commands for a cisco device
 
@@ -73,8 +92,12 @@ r = nr.run(task=netmiko_send_config, name='Set several commands at one task', co
     "<enter last cli command here>"
     ])
 
-#==============================================================================
+# Run Task as which was defined as Function before
+nx_hosts.run(task=<task_name>) # is used when you filtered for hosts and stored them in a variable (here nx_hosts) and now  you want to run a task against those filtered hosts (see filtering above)
+# or
+nr.run(task=<task_name>) # is used when you you want to run the task against all hosts in the inventory defined by 'nr'
 
+#==============================================================================
 # Access Results in Nornir
 # Read closley! https://nornir.readthedocs.io/en/stable/tutorial/task_results.html
 # Running a task will return a dict-like object where keys are the hosts' name and the values
@@ -96,9 +119,7 @@ for item in r['hostname f.e. dnksw-core-1']:
     print(item)
 
 #==============================================================================
-
 # Set Credentials for certain (Host)Groups for devices
-
 # Set Access Users for Groups 'a'
 access_user = input('Enter Access Username: ') # Enter Username for Access Switch
 access_password = getpass.getpass(prompt ="Access Switch password: ") # Enter password for Device in Access Group in Hosts.yaml
