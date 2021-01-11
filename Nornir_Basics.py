@@ -118,6 +118,11 @@ for host, task_result in r.items():
 for item in r['hostname f.e. dnksw-core-1']:
     print(item)
 
+# Function for parsing Results from Nornir Task Result, data is runned task stored in variable
+def result_parser(data):
+    for host, task_result in data.items():
+        return task_result[1].result
+
 #==============================================================================
 # Set Credentials for certain (Host)Groups for devices
 # Set Access Users for Groups 'a'
