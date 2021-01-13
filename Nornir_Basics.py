@@ -97,6 +97,13 @@ nx_hosts.run(task=<task_name>) # is used when you filtered for hosts and stored 
 # or
 nr.run(task=<task_name>) # is used when you you want to run the task against all hosts in the inventory defined by 'nr'
 
+# Create a Session Log for Netmik Commands, so you can store the output of Show commands into a per Host-File
+# see https://nornir.discourse.group/t/how-do-you-do-per-host-session-log-for-netmiko-task-plugins/134
+def some_task(task):
+    filename = f"{task.host}-somename.txt"
+    task.host.connection_options["netmiko"].extras["session_log"] = filename
+    multi_result = task.run(task=netmiko_send_command, command_string="command_string")
+
 #==============================================================================
 # Access Results in Nornir
 # Read closley! https://nornir.readthedocs.io/en/stable/tutorial/task_results.html
