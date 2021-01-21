@@ -48,7 +48,9 @@ nr = InitNornir(
     },
 )
 #==============================================================================
-
+# Install Modules for Nornir 3.0 via pip
+## see here for all (needed) Plugins
+## https://nornir.tech/nornir/plugins/
 
 #################################################################################
 
@@ -68,7 +70,7 @@ hosts = nr.filter(name="phusw-so-02") # filter for value = name in hosts.yaml. I
 hosts = nr.filter(dot1x="yes") # use only hosts where "data: dot1x: yes" is set in Host Inventory File!
 
 # Filter for groups...
-nx_hosts = nr.filter(site='Denklingen'))
+nx_hosts = nr.filter(site='Denklingen')
 
 # ... or platform
 nx_hosts = nr.filter(platform='nxos_ssh')
