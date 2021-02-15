@@ -80,6 +80,8 @@ nx_hosts = nr.filter(platform='nxos_ssh')
 from nornir.core.filter import F
 # You can use F for filtering for multiple criterias, f.e. for platform and site
 nx_hosts = nr.filter(F(platform='nxos_ssh') & F(site='Denklingen'))
+# For filtering for groups you need to use the following:
+switches = nr.filter(F(groups__contains='a')&F(groups_contains='sog'))
 # more infos about that see here: https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf Page 31 and following
 
 #==============================================================================
