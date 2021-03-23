@@ -21,8 +21,8 @@ import getpass
 ```
 
 # v3.0 and further
-## Modules
-### Needed modules to import
+# Modules
+## Needed modules to import
 ```python
 from nornir import InitNornir                                           # Core Functions for Nornir
 from nornir.core.task import Task, Result                               # Import Task and Result Functions of Nornir
@@ -35,7 +35,7 @@ from nornir_jinja2.plugins.tasks import template_file                   # Import
 import getpass                                                          # Library to ask for passwords without prompting them!
 ```
 
-### Plugin Modules
+## Plugin Modules
 Nornir needs to be installed with pip `pip install nornir`
 
 This command only install the core of nornir
@@ -50,8 +50,8 @@ A helpful list of usefull plugins can be found [here](https://nornir.tech/nornir
 
 # =====================================
 
-## Basic Commands
-### Inventory
+# Basic Commands
+## Inventory
 
 The inventory consists of three files.
 * hosts.yaml
@@ -99,7 +99,7 @@ runner:
 
 # =====================================
 
-#### Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org nornir)
+### Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org nornir)
 
 ```python
 nr = InitNornir(
@@ -121,8 +121,8 @@ nr = InitNornir(
 
 # =====================================
 
-#### Access Inventory
-##### Show Hosts of Inventory:
+## Access Inventory
+### Show Hosts of Inventory:
 
 ```python 
 nr.inventory.hosts
@@ -130,14 +130,14 @@ nr.inventory.hosts
 
 # =====================================
 
-### Filtering Inventory
-#### Filter for name in Inventory:
+## Filtering Inventory
+### Filter for name in Inventory:
 
 ```python 
 nr.filter(name="devicename")
 ```
 
-#### Filter for <data> Values in Inventory:
+### Filter for <data> Values in Inventory:
 Filter for hosts only where "data: dot1x: yes" is set in hosts.yaml!
 ```python 
 nr.filter(dot1x="yes")
@@ -153,7 +153,7 @@ nr.filter(site='Location')
 nr.filter(platform='ios')
 ```
 
-#### Filtering Inventory with F Function
+### Filtering Inventory with F Function
 You can use F for filtering for multiple criterias, f.e. for platform and site
 ```python
 hosts = nr.filter(F(platform='nxos_ssh') & F(site='Location'))
@@ -167,8 +167,8 @@ switches = nr.filter(F(groups__contains='access')&F(groups_contains='location'))
 More infos about that see [here](https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf) Page 31 and following
 
 # =====================================
-### Running Tasks
-#### Define a Task as a function
+# Running Tasks
+## Define a Task as a function
 This is useful when you want to reuse the work the task does.
 By defining a function, not only that it´s a good programming etiquete, it´s quite useful for reusing defined programming snippets
 
@@ -195,12 +195,12 @@ You can also run the task against a filter set of host. When you filtered the in
 result = hosts.run(task=task_name)
 ```
 
-#### Run Task with oneliner (example send a command to a device with netmiko_send_command)
+## Run Task with oneliner (example send a command to a device with netmiko_send_command)
 ```python
 r = nr.run(task=netmiko_send_command, command_string="<enter cli command here>", use_genie=True) # Genie can be used to parse the output of show commands for a cisco device
 ```
 
-#### Run Task with Nornir (example with more lines Netmiko Send Command)
+## Run Task with Nornir (example with more lines Netmiko Send Command)
 ```python
 r = nr.run(task=netmiko_send_config, name='Set several commands at one task', config_commands=[
     "<enter cli command 1 here>",
@@ -210,7 +210,8 @@ r = nr.run(task=netmiko_send_config, name='Set several commands at one task', co
 ```
 
 # =====================================
-### Access Results
+# Results
+## Access Results
 Read closley! [Read the Docs: Task-Results](https://nornir.readthedocs.io/en/stable/tutorial/task_results.html)
 
 Running a task will return a dict-like object where keys are the hosts' name and the values are a list of results
