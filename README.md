@@ -34,15 +34,15 @@ import getpass                                                          # Librar
 ```
 
 ### Plugin Modules
-Nornir needs to be installed with pip
-`pip install nornir`
+Nornir needs to be installed with pip `pip install nornir`
+
 This command only install the core of nornir
 
 If you want to use above mentioned Plugins, you need to install the following plugins:
-`pip install nornir_utils`
-`pip install nornir_napalm`
-`pip install nornir_netmiko`
-`pip install nornir_jinja2`
+* `pip install nornir_utils`
+* `pip install nornir_napalm`
+* `pip install nornir_netmiko`
+* `pip install nornir_jinja2`
 
 A helpful list of usefull plugins can be found [here](https://nornir.tech/nornir/plugins/)
 
