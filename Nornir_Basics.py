@@ -147,3 +147,17 @@ core_user = input('Enter Core Username: ') # Enter Username for Access Switch
 core_password = getpass.getpass(prompt ="Core Switch password: ") # Enter password for Device in Access Group in Hosts.yaml
 nr.inventory.groups['c'].username = core_user # set Username for Access Group
 nr.inventory.groups['c'].password = core_password # set password for Core Group
+
+
+#==============================================================================
+# Create and Render Template for Configuration with Jinja2
+## This Example gather all Interface Informations from a device and passes them to the nornir template.
+## The Template is then render with the informations and then used to configure the device.
+def render_template(task):
+    # Get Interfaces, we passed to task.host['interfaces'] in task before and render template with this information
+    # interfaces, namend last in this command string, is a free chosable dictionary name
+    # It only important to have dictionary which can be passed to Jinja2!
+    intf = task.run(task=template_file, path='/home/nouse4it/Scripts/Nornir/Nornir-IAC/templates/', template=template, interfaces=task.host['interfaces'])
+    # Here the final rendered config is passed to netmiko and send as a STRING (!!!) (str()) to the device. 
+    # split is used because netmiko_send_config needs to have config line by line!
+    deploy_config = task.run(task=netmiko_send_config, name='Configure Interfaces', config_commands=str(intf.result).split("\n"))
