@@ -7,6 +7,8 @@ https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-worksh
 # Nornir Documentation
 https://nornir.readthedocs.io/en/latest/
 
+# =====================================
+
 # v2.5.0
 ## Modules
 ### Needed modules to import
@@ -45,6 +47,8 @@ If you want to use above mentioned Plugins, you need to install the following pl
 * `pip install nornir_jinja2`
 
 A helpful list of usefull plugins can be found [here](https://nornir.tech/nornir/plugins/)
+
+# =====================================
 
 ## Basic Commands
 ### Inventory
@@ -93,6 +97,7 @@ runner:
         num_workers: 10
 ```
 
+# =====================================
 
 #### Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org nornir)
 
@@ -114,7 +119,7 @@ nr = InitNornir(
 )
 ```
 
-# ==============================================================================================================================================================================
+# =====================================
 
 #### Access Inventory
 ##### Show Hosts of Inventory:
@@ -123,7 +128,7 @@ nr = InitNornir(
 nr.inventory.hosts
 ```
 
-# ==============================================================================================================================================================================
+# =====================================
 
 #### Filtering Inventory
 ##### Filter for name in Inventory:
@@ -161,7 +166,7 @@ switches = nr.filter(F(groups__contains='access')&F(groups_contains='location'))
 
 More infos about that see [here](https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf) Page 31 and following
 
-# ==============================================================================================================================================================================
+# =====================================
 #### Running Tasks
 ##### Run Task with oneliner (example send a command to a device with netmiko_send_command)
 ```python
