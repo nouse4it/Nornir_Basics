@@ -114,6 +114,7 @@ nr = InitNornir(
 )
 ```
 
+# ==============================================================================================================================================================================
 
 #### Access Inventory
 ##### Show Hosts of Inventory:
@@ -121,6 +122,8 @@ nr = InitNornir(
 ```python 
 nr.inventory.hosts
 ```
+
+# ==============================================================================================================================================================================
 
 #### Filtering Inventory
 ##### Filter for name in Inventory:
@@ -158,6 +161,7 @@ switches = nr.filter(F(groups__contains='access')&F(groups_contains='location'))
 
 More infos about that see [here](https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf) Page 31 and following
 
+# ==============================================================================================================================================================================
 #### Running Tasks
 ##### Run Task with oneliner (example send a command to a device with netmiko_send_command)
 ```python
