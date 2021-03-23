@@ -1,33 +1,4 @@
 
-#==============================================================================
-# Running Tasks
-# Run Task with Nornir (example with one line Netmiko Send Command)
-r = nr.run(task=netmiko_send_command, command_string="<enter cli command here>", use_genie=True) # Genie can be used to parse the output of show commands for a cisco device
-
-# Run Task with Nornir (example with more lines Netmiko Send Command)
-r = nr.run(task=netmiko_send_config, name='Set several commands at one task', config_commands=[
-    "<enter cli command 1 here>",
-    "<enter cli command 2 here>",
-    "<enter last cli command here>"
-    ])
-
-# Run Task as which was defined as Function before
-nx_hosts.run(task=<task_name>) # is used when you filtered for hosts and stored them in a variable (here nx_hosts) and now  you want to run a task against those filtered hosts (see filtering above)
-# or
-nr.run(task=<task_name>) # is used when you you want to run the task against all hosts in the inventory defined by 'nr'
-
-# Create a Session Log for Netmik Commands, so you can store the output of Show commands into a per Host-File
-# see https://nornir.discourse.group/t/how-do-you-do-per-host-session-log-for-netmiko-task-plugins/134
-def some_task(task):
-    filename = f"{task.host}-somename.txt"
-    task.host.connection_options["netmiko"].extras["session_log"] = filename
-    multi_result = task.run(task=netmiko_send_command, command_string="command_string")
-
-#==============================================================================
-# Access Results in Nornir
-# Read closley! https://nornir.readthedocs.io/en/stable/tutorial/task_results.html
-# Running a task will return a dict-like object where keys are the hosts' name and the values
-# are a list of results
 for host, task_result in r.items():
     print(task_result[0])               # Access First Task that was ran (even if its the only task that ran). 
 # After that the values can be accessed
