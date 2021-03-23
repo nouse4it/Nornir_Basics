@@ -130,14 +130,14 @@ nr.inventory.hosts
 
 # =====================================
 
-#### Filtering Inventory
-##### Filter for name in Inventory:
+### Filtering Inventory
+#### Filter for name in Inventory:
 
 ```python 
 nr.filter(name="devicename")
 ```
 
-##### Filter for <data> Values in Inventory:
+#### Filter for <data> Values in Inventory:
 Filter for hosts only where "data: dot1x: yes" is set in hosts.yaml!
 ```python 
 nr.filter(dot1x="yes")
@@ -167,8 +167,54 @@ switches = nr.filter(F(groups__contains='access')&F(groups_contains='location'))
 More infos about that see [here](https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf) Page 31 and following
 
 # =====================================
-#### Running Tasks
-##### Run Task with oneliner (example send a command to a device with netmiko_send_command)
+### Running Tasks
+#### Define a Task as a function
+This is useful when you want to reuse the work the task does.
+By defining a function, not only that it´s a good programming etiquete, it´s quite useful for reusing defined programming snippets
+
+```python
+def some_task(task):
+    r = nr.run(task=netmiko_send_config, name='Set several commands at one task', config_commands=[
+    "<enter cli command 1 here>",
+    "<enter cli command 2 here>",
+    "<enter last cli command here>"
+    ])
+```
+After defining the task as a function you can call the function and store the result into an variable:
+```python
+result = nr.run(task=task_name)
+``` 
+
+Now you can print the result with the print_result function
+```python
+print_result(result)
+```
+
+You can also run the task against a filter set of host. When you filtered the inventory before (see above)
+```python
+result = hosts.run(task=task_name)
+```
+
+#### Run Task with oneliner (example send a command to a device with netmiko_send_command)
 ```python
 r = nr.run(task=netmiko_send_command, command_string="<enter cli command here>", use_genie=True) # Genie can be used to parse the output of show commands for a cisco device
+```
+
+#### Run Task with Nornir (example with more lines Netmiko Send Command)
+```python
+r = nr.run(task=netmiko_send_config, name='Set several commands at one task', config_commands=[
+    "<enter cli command 1 here>",
+    "<enter cli command 2 here>",
+    "<enter last cli command here>"
+    ])
+```
+
+# =====================================
+### Access Results
+Read closley! [Read the Docs: Task-Results](https://nornir.readthedocs.io/en/stable/tutorial/task_results.html)
+
+Running a task will return a dict-like object where keys are the hosts' name and the values are a list of results
+```python
+In [5]: nr.run(task=some_task)
+Out[5]: AggregatedResult (some_task): {'hostname': MultiResult: [Result: "some_task", Result: "netmiko_send_command"]}
 ```
