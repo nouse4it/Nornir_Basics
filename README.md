@@ -114,22 +114,52 @@ nr = InitNornir(
 )
 ```
 
+
 #### Access Inventory
-##### Show Hosts of Inventory
+##### Show Hosts of Inventory:
 
 ```python 
 nr.inventory.hosts
 ```
 
 #### Filtering Inventory
-##### Filter for name in Inventory
+##### Filter for name in Inventory:
 
 ```python 
 nr.filter(name="devicename")
 ```
 
-##### Filter for <data> Values in Inventory
+##### Filter for <data> Values in Inventory:
 Filter for hosts only where "data: dot1x: yes" is set in hosts.yaml!
 ```python 
 nr.filter(dot1x="yes")
+```
+
+Filter for groups from groups.yaml...:
+```python 
+nr.filter(site='Location')
+```
+
+... or platform from groups.yaml or hosts.yaml:
+```python 
+nr.filter(platform='ios')
+```
+
+#### Filtering Inventory with F Function
+You can use F for filtering for multiple criterias, f.e. for platform and site
+```python
+hosts = nr.filter(F(platform='nxos_ssh') & F(site='Location'))
+```
+
+For filtering for groups you need to use the following:
+```python
+switches = nr.filter(F(groups__contains='access')&F(groups_contains='location'))
+```
+
+More infos about that see [here](https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf) Page 31 and following
+
+#### Running Tasks
+##### Run Task with oneliner (example send a command to a device with netmiko_send_command)
+```python
+r = nr.run(task=netmiko_send_command, command_string="<enter cli command here>", use_genie=True) # Genie can be used to parse the output of show commands for a cisco device
 ```
