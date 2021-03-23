@@ -94,7 +94,7 @@ runner:
 ```
 
 
-### Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org nornir)
+#### Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org nornir)
 
 ```python
 nr = InitNornir(
@@ -112,4 +112,24 @@ nr = InitNornir(
         },
     },
 )
+```
+
+#### Access Inventory
+##### Show Hosts of Inventory
+
+```python 
+nr.inventory.hosts
+```
+
+#### Filtering Inventory
+##### Filter for name in Inventory
+
+```python 
+nr.filter(name="devicename")
+```
+
+##### Filter for <data> Values in Inventory
+Filter for hosts only where "data: dot1x: yes" is set in hosts.yaml!
+```python 
+nr.filter(dot1x="yes")
 ```
