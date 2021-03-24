@@ -7,7 +7,7 @@ https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-worksh
 # Nornir Documentation
 https://nornir.readthedocs.io/en/latest/
 
-# =====================================
+=====================================
 
 # v2.5.0
 ## Modules
@@ -48,7 +48,7 @@ If you want to use above mentioned Plugins, you need to install the following pl
 
 A helpful list of usefull plugins can be found [here](https://nornir.tech/nornir/plugins/)
 
-# =====================================
+=====================================
 
 # Basic Commands
 ## Inventory
@@ -97,7 +97,7 @@ runner:
         num_workers: 10
 ```
 
-# =====================================
+=====================================
 
 ### Create Inventory directly in programm, not over files in config.yaml (for file see readthedocs.org nornir)
 
@@ -119,7 +119,7 @@ nr = InitNornir(
 )
 ```
 
-# =====================================
+=====================================
 
 ## Access Inventory
 ### Show Hosts of Inventory:
@@ -128,7 +128,7 @@ nr = InitNornir(
 nr.inventory.hosts
 ```
 
-# =====================================
+=====================================
 
 ## Filtering Inventory
 ### Filter for name in Inventory:
@@ -166,7 +166,7 @@ switches = nr.filter(F(groups__contains='access')&F(groups_contains='location'))
 
 More infos about that see [here](https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf) Page 31 and following
 
-# =====================================
+=====================================
 # Running Tasks
 ## Define a Task as a function
 This is useful when you want to reuse the work the task does.
@@ -209,7 +209,7 @@ r = nr.run(task=netmiko_send_config, name='Set several commands at one task', co
     ])
 ```
 
-# =====================================
+=====================================
 # Results
 ## Access Results
 Read closley! [Read the Docs: Task-Results](https://nornir.readthedocs.io/en/stable/tutorial/task_results.html)
@@ -253,7 +253,7 @@ def result_parser(data):
         return task_result[1].result
 ```
 
-# =====================================
+=====================================
 # Credentials
 ## Set Credentials for certain (Host)Groups
 You can either set the credentials via host.yaml or groups.yaml.
