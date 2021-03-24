@@ -1,5 +1,5 @@
 # Nornir_Basics
-Nornir Commands and Tutorial Curriculum
+Nornir Commands and Tutorial Curriculum for https://github.com/nornir-automation/nornir
 
 # Nornir Workshop Tutorial
 https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf
