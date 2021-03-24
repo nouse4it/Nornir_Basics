@@ -216,6 +216,72 @@ Read closley! [Read the Docs: Task-Results](https://nornir.readthedocs.io/en/sta
 
 Running a task will return a dict-like object where keys are the hosts' name and the values are a list of results
 ```python
-In [5]: nr.run(task=some_task)
+In [5]: r = nr.run(task=some_task)
 Out[5]: AggregatedResult (some_task): {'hostname': MultiResult: [Result: "some_task", Result: "netmiko_send_command"]}
+```
+
+To access the data of this multiresult you can use the following to access the first task that was ran (even if it´s the only task that was run)
+```python
+for host, task_result in r.items():
+    print(task_result[0])   
+```
+After that you can access the values
+```python
+for host, task_result in r.items():
+    print(task_result[0].result['values'])
+```
+
+## Access Results of Task from Function
+For tasks defined by a function, the logic is slightly different
+Here instead of task_result[0] you have to use task_result[1] to access the first task.
+There is a different internal logic at work :-/
+```python
+for host, task_result in r.items():
+    print(task_result[1].result['values'])
+```
+
+You can also filter for items of task_result for one specific host
+```python
+for item in r['hostname']:
+    print(item)
+```
+
+You can also define this 'Result Parser' as a function
+```python
+def result_parser(data):
+    for host, task_result in data.items():
+        return task_result[1].result
+```
+
+# =====================================
+# Credentials
+## Set Credentials for certain (Host)Groups
+You can either set the credentials via host.yaml or groups.yaml.
+Or, if you don´t want to store credentials in unencrypted files, you can ask for credentials inside of the scripts and set them for certain host groups
+```python
+access_user = input('Enter Access Username: ')
+access_password = getpass.getpass(prompt ="Access Switch password: ") 
+nr.inventory.groups['access'].username = access_user
+nr.inventory.groups['access'].password = access_password
+```
+
+=====================================
+# Jinja2 Templates with Nornir
+## Create and Render Template for Configuration with Jinja2
+This Example gather all Interface Informations from a device and passes them to the nornir template.
+The Template is then render with the informations and then used to configure the device.
+```python
+# Get Interfaces of device and store them as a Host Data
+def get_intf(task):
+    r = task.run(task=netmiko_send_command, command_string="show int status", use_genie=True)
+    task.host['interfaces'] = r.result['interfaces']
+
+def render_template(task):
+    # Get Interfaces, we passed to task.host['interfaces'] in task before and render template with this information
+    # interfaces, namend last in the following command string, is a free chosable dictionary name
+    # It only important to have dictionary which can be passed to Jinja2!
+    intf = task.run(task=template_file, path='/templates/', template=template, interfaces=task.host['interfaces'])
+    # Here the final rendered config is passed to netmiko and send as a STRING (!!!) (str()) to the device. 
+    # split is used because netmiko_send_config needs to have config line by line!
+    deploy_config = task.run(task=netmiko_send_config, name='Configure Interfaces', config_commands=str(intf.result).split("\n"))
 ```
