@@ -164,6 +164,11 @@ For filtering for groups you need to use the following:
 switches = nr.filter(F(groups__contains='access')&F(groups_contains='location'))
 ```
 
+Filter with or operator to select either host with name x or name y f.e.:
+```python
+switches = nr.filter(F(name='host x') | F(name='host y'))
+```
+
 More infos about that see [here](https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf) Page 31 and following
 
 =====================================
