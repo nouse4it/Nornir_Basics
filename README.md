@@ -128,6 +128,20 @@ nr = InitNornir(
 nr.inventory.hosts
 ```
 
+### Show Details of the complete Inventory:
+
+```python 
+nr.inventory.dict()
+```
+
+### Show Group of certain device in the inventory:
+
+```python 
+nr.inventory.hosts["devicename"].groups
+```
+
+More infos about that see [here](https://raw.githubusercontent.com/dravetech/nornir-workshop/master/nornir-workshop.pdf) Page 19 and following
+
 =====================================
 
 ## Filtering Inventory
